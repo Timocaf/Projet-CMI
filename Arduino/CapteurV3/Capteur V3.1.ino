@@ -136,7 +136,7 @@ void loop() {
   tabMesures [3] = mesure_180;
   tabMesures [4] = mesure_240;
   tabMesures [5] = mesure_300;
-  Serial.print("\t Dianger le plus proche = ");
+  Serial.print("\t Danger le plus proche = ");
 
   int danger = minVal(tabMesures, nombreCapteurs);
   Serial.println(danger);
