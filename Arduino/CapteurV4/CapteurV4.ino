@@ -105,7 +105,7 @@ void loop(){
     }
   }
   if (bluetooth_value < 10){
-    BTSerial.print("00"+String(bluetooth_value));
+    BTSerial.print("00"+String(bluetooth_value));  // Pour assurer un retour avec 3 chiffres pour les valeurs en dessous de 100
   }
   else if (bluetooth_value < 100){
     BTSerial.print("0"+String(bluetooth_value));
