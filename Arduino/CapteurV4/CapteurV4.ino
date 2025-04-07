@@ -115,5 +115,4 @@ void loop(){
   }
  
   Serial.println(bluetooth_value);
-  BTSerial.flush();
 }
