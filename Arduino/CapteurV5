@@ -1,5 +1,6 @@
 // Utiliser la version 2.0.1 de la bibliothque SharpIR
 // Port Analogique 0 et 1 inutilisable
+#include <Wire.h>
 #include <SharpIR.h>
 #include <SoftwareSerial.h>
 
@@ -74,6 +75,12 @@ void setup(){
   for(int i = 0; i < nombreCapteurs; i++){
     delay(100);
     Serial.println(i);
+  Wire.begin(0x42);
+  Wire.onRequest([](){
+    // quand le maître demande, on lui envoie nos 8 distances
+    Wire.write((uint8_t*)tabMesures_with_average, sizeof(tabMesures_with_average));
+  });
+
   }
 }
 
