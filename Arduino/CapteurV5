@@ -20,6 +20,7 @@ int * tabMesures = new int[nombreCapteurs]{mesure_0, mesure_60, mesure_120, mesu
 int tabMesures_with_average[nombreCapteurs]{0};
 int danger;
 int bluetooth_value = 0;
+uint8_t tabForWheel[nombreCapteurs]{0};
 
 
 SharpIR Capteur_0( SharpIR::GP2Y0A21YK0F, A3 );
@@ -44,8 +45,10 @@ int minVal(int tab[], int taille){
 void afficheTableau(int tab[]){
   for(int i = 0; i < nombreCapteurs; i++){
     delay(100);
-    Serial.println(tab[i]);
+    Serial.print(tab[i]);
+    Serial.print("; ");
   }
+  Serial.println("\n");
 }
 
 int puissance(int exposant, int valeur){
@@ -67,6 +70,17 @@ void calculAverage(int* tab1, int* tab2, int* tab3, int* destination, int nombre
   }
 }
 
+void calculArrayWheel(int TabInt[], uint8_t TabForWheel[], int nombreCapteurs){
+  for(uint8_t i = 0; i < nombreCapteurs; i++){
+    TabForWheel[i] = (uint8_t)TabInt[i];
+  }
+}
+
+void onI2CRequest() {
+  calculArrayWheel(tabMesures_with_average,tabForWheel,nombreCapteurs);
+  Wire.write(tabForWheel, nombreCapteurs);
+}
+
 
 void setup(){
   Serial.begin(9600);
@@ -76,11 +90,7 @@ void setup(){
     delay(100);
     Serial.println(i);
   Wire.begin(0x42);
-  Wire.onRequest([](){
-    // quand le maître demande, on lui envoie nos 8 distances
-    Wire.write((uint8_t*)tabMesures_with_average, sizeof(tabMesures_with_average));
-  });
-
+  Wire.onRequest(onI2CRequest);
   }
 }
 
@@ -118,9 +128,12 @@ void loop(){
   // Bluetooth (si ça marche pas faut taper Ewan)
   calculAverage(tab_save_last_value, tab_save_last_value2, tabMesures, tabMesures_with_average, nombreCapteurs);
 
+  afficheTableau(tabMesures);
+  afficheTableau(tabMesures_with_average);
+
   bluetooth_value = 0;
   for(int i = 0; i < nombreCapteurs; i++){
-    if(30 <= tabMesures_with_average[i] and tabMesures_with_average[i] < 70){
+    if(20 <= tabMesures_with_average[i] and tabMesures_with_average[i] < 75){
       bluetooth_value += puissance(i,2);
     }
   }
