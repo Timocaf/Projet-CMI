@@ -77,7 +77,7 @@ void calculArrayWheel(int TabInt[], uint8_t TabForWheel[], int nombreCapteurs){
 }
 
 void onI2CRequest() {
-  calculArrayWheel(tabMesures_with_average,tabForWheel,nombreCapteurs);
+  calculArrayWheel(tabMesures,tabForWheel,nombreCapteurs);
   Wire.write(tabForWheel, nombreCapteurs);
 }
 
