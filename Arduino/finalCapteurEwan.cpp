@@ -5,7 +5,7 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
-#include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+ #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
 
 // Which pin on the Arduino is connected to the NeoPixels?
@@ -31,13 +31,15 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 #define TX_BT 14
 
 int mesure_0 = 0;
-int mesure_60 = 0;
-int mesure_120 = 0;
+int mesure_45 = 0;
+int mesure_90 = 0;
+int mesure_135 = 0;
 int mesure_180 = 0;
-int mesure_240 = 0;
-int mesure_300 = 0;
-const int nombreCapteurs = 6;
-int * tabMesures = new int[nombreCapteurs]{mesure_0, mesure_60, mesure_120, mesure_180, mesure_240, mesure_300};
+int mesure_225 = 0;
+int mesure_270 = 0;
+int mesure_315 = 0;
+const int nombreCapteurs = 8;
+int * tabMesures = new int[nombreCapteurs]{mesure_0, mesure_45, mesure_90, mesure_135, mesure_180, mesure_225, mesure_270, mesure_315};
 /*int tab_save_last_value[nombreCapteurs]{0};   ancien système pour les valeurs bluetooth
 int tab_save_last_value2[nombreCapteurs]{0};
 int tabMesures_with_average[nombreCapteurs]{0};
@@ -50,12 +52,14 @@ unsigned long  previousMillis;
 unsigned long interval = 500;
 
 
-SharpIR Capteur_0( SharpIR::GP2Y0A21YK0F, A3 );
-SharpIR Capteur_60( SharpIR::GP2Y0A21YK0F, A5 );
-SharpIR Capteur_120( SharpIR::GP2Y0A21YK0F, A7 );
+SharpIR Capteur_0( SharpIR::GP2Y0A21YK0F, A1 );
+SharpIR Capteur_45( SharpIR::GP2Y0A21YK0F, A3 );
+SharpIR Capteur_90( SharpIR::GP2Y0A21YK0F, A5 );
+SharpIR Capteur_135( SharpIR::GP2Y0A21YK0F, A7 );
 SharpIR Capteur_180( SharpIR::GP2Y0A21YK0F, A9 );
-SharpIR Capteur_240( SharpIR::GP2Y0A21YK0F, A11 );
-SharpIR Capteur_300( SharpIR::GP2Y0A21YK0F, A13 );
+SharpIR Capteur_225( SharpIR::GP2Y0A21YK0F, A11 );
+SharpIR Capteur_270( SharpIR::GP2Y0A21YK0F, A13 );
+SharpIR Capteur_315( SharpIR::GP2Y0A21YK0F, A15 );
 
 SoftwareSerial BTSerial(RX_BT, TX_BT);
 
@@ -109,6 +113,19 @@ void onI2CRequest() {
   Wire.write(tabForWheel, nombreCapteurs);
 }
 
+void LEDdanger(int * tab, int nb_cap){
+ for(int i = 0; i < nb_cap; i++){
+   if(tab[i] <= 30){
+     strip.setPixelColor(i, strip.Color(255, 0, 0));
+     strip.show();
+     delay(10);
+   }
+   else{
+     strip.setPixelColor(i, strip.Color(0, 255, 0));
+     strip.show();
+   }
+ }
+}
 
 void setup(){
   Serial.begin(9600);
@@ -151,6 +168,7 @@ void loop(){
 
   int danger = minVal(tabMesures, nombreCapteurs);
   afficheTableau(tabMesures);
+  LEDdanger(tabMesures, nombreCapteurs);
 
   // Bluetooth (si ça marche pas faut taper Ewan)
   //calculAverage(tab_save_last_value, tab_save_last_value2, tabMesures, tabMesures_with_average, nombreCapteurs);    ancien système bluetooth
