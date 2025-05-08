@@ -9,10 +9,10 @@ port = "/dev/ttyACM0"  # Linux/Mac : /dev/ttyUSB0 ou /dev/ttyACM0 | Windows : CO
 baud_rate = 9600  # Doit correspondre à Serial.begin(9600)
 loop = True
 
-nombreCapteurs = 6
+nombreCapteurs = 8
 cycle = 0
 # Labels des axes
-labels = ['3', '2', '1', '6', '5', '4']
+labels = ['3', '2', '1','8', '7', '6', '5', '4']
 num_vars = len(labels)
 angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False)
 
@@ -34,7 +34,9 @@ def update_points(tabMesures):
     ax.set_title("Données Dynamiques en Temps Réel", size=16, pad=20)
 
     # Fermer la boucle pour relier les points
-    values = np.append(tabMesures, tabMesures[0])  # Reprendre le premier point à la fin
+    values = np.append(tabMesures, tabMesures[0])  
+    
+    # Reprendre le premier point à la fin
     angle_vals = np.append(angles, angles[0])
 
     # Tracer la ligne polygonale
@@ -60,8 +62,8 @@ try:
         if line:  # Vérifie si la ligne n'est pas vide
             tabMesures = line.split(',')
             print(f"Donnée reçue : {line}")
-            if len(tabMesures) >= 6:
-                tabMesures = [int(x) for x in tabMesures]
+            if len(tabMesures) >= 8:
+                tabMesures = [int(tabMesures[x]) for x in range(-2,6)] # afin d'avoir les mesure dans l'ordre pour un affichage polaire
                 print(tabMesures)
                 update_points(tabMesures)
 
@@ -73,6 +75,4 @@ except KeyboardInterrupt:
     plt.close('all')
     print("\nProgramme interrompu par l'utilisateur.")
     loop=False
-
-
 
