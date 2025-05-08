@@ -48,11 +48,12 @@ int minVal(int tab[], int taille){
 
 void afficheTableau(int tab[]){
   for(int i = 0; i < nombreCapteurs; i++){
-    delay(100);
     Serial.print(tab[i]);
-    Serial.print("; ");
+    if(i+1 < nombreCapteurs){
+      Serial.print(",");
+    }
   }
-  Serial.println("\n");
+  Serial.println();
 }
 
 int puissance(int exposant, int valeur){
@@ -126,7 +127,7 @@ void loop(){
   //Serial.print("\t Danger le plus proche = ");
 
   int danger = minVal(tabMesures, nombreCapteurs);
-  //afficheTableau(tabMesures);
+  afficheTableau(tabMesures);
 
   // Bluetooth (si ça marche pas faut taper Ewan)
   //calculAverage(tab_save_last_value, tab_save_last_value2, tabMesures, tabMesures_with_average, nombreCapteurs);    ancien système bluetooth
