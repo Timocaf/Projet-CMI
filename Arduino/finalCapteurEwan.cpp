@@ -22,6 +22,9 @@ int tabMesures_with_average[nombreCapteurs]{0};
 int danger;
 int bluetooth_value = 0;
 uint8_t tabForWheel[nombreCapteurs]{0};
+unsigned long currentMillis;
+unsigned long  previousMillis;
+unsigned long interval = 500;
 
 
 SharpIR Capteur_0( SharpIR::GP2Y0A21YK0F, A3 );
@@ -96,7 +99,6 @@ void setup(){
 }
 
 void loop(){
-  delay(250);
   //Serial.print("Distance 0° (cm) = ");
   mesure_0 = Capteur_0.getDistance();
   //Serial.print(mesure_0);
@@ -129,19 +131,23 @@ void loop(){
   // Bluetooth (si ça marche pas faut taper Ewan)
   //calculAverage(tab_save_last_value, tab_save_last_value2, tabMesures, tabMesures_with_average, nombreCapteurs);    ancien système bluetooth
 
-  bluetooth_value = 0;
-  for(int i = 0; i < nombreCapteurs; i++){
-    if(tabMesures[i] < 30){                 //30 représente le seuil de distance pour la partie roue du projet
-      bluetooth_value += puissance(i,2);    //chaque capteur est associé à une puissance de 2 dans l'application bluetooth
-    }
-  }
-  if (bluetooth_value < 10){
-    BTSerial.print("00"+String(bluetooth_value));  // Pour assurer un retour avec 3 chiffres pour les valeurs en dessous de 100
-  }
-  else if (bluetooth_value < 100){
-    BTSerial.print("0"+String(bluetooth_value));  //same
-  }
-  else{
-     BTSerial.print(bluetooth_value);
+  currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+      bluetooth_value = 0;
+      for(int i = 0; i < nombreCapteurs; i++){
+        if(tabMesures[i] < 30){                 //30 représente le seuil de distance pour la partie roue du projet
+          bluetooth_value += puissance(i,2);    //chaque capteur est associé à une puissance de 2 dans l'application bluetooth
+        }
+      }
+      if (bluetooth_value < 10){
+        BTSerial.print("00"+String(bluetooth_value));  // Pour assurer un retour avec 3 chiffres pour les valeurs en dessous de 100
+      }
+      else if (bluetooth_value < 100){
+        BTSerial.print("0"+String(bluetooth_value));  //same
+      }
+      else{
+        BTSerial.print(bluetooth_value);
+      }
+      previousMillis = currentMillis;
   }
 }
