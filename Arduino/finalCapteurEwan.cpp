@@ -63,7 +63,7 @@ SharpIR Capteur_315( SharpIR::GP2Y0A21YK0F, A15 );
 
 SoftwareSerial BTSerial(RX_BT, TX_BT);
 
-int minVal(int tab[], int taille){
+/*int minVal(int tab[], int taille){    obselete
   int valMin = tab[0];
   for (int i = 1; i < taille; i++){
     if(valMin > tab[i]){
@@ -71,7 +71,7 @@ int minVal(int tab[], int taille){
     }
   }
   return valMin;
-}
+}*/
 
 void afficheTableau(int tab[]){
   for(int i = 0; i < nombreCapteurs; i++){
@@ -163,7 +163,7 @@ void loop(){
   tabMesures [6] = mesure_270;
   tabMesures [7] = mesure_315;
 
-  int danger = minVal(tabMesures, nombreCapteurs);
+  //int danger = minVal(tabMesures, nombreCapteurs); obselete
   afficheTableau(tabMesures);
   LEDdanger(tabMesures, nombreCapteurs);
 
