@@ -114,15 +114,21 @@ void onI2CRequest() {
 }
 
 void LEDdanger(int * tab, int nb_cap){
+  int tab_pix_start[nb_cap] = {0,6,12,16,20,24,28};
+  int tab_pix_neon[nb_cap] = {6,6,4,4,4,4,4,6}
  for(int i = 0; i < nb_cap; i++){
    if(tab[i] <= 30){
-     strip.setPixelColor(i, strip.Color(255, 0, 0));
-     strip.show();
-     delay(10);
+     for(int j = 0; j < tab_pix_neon[i]; j++){
+       strip.setPixelColor(j + tab_pix_start[i], strip.Color(255, 0, 0));
+       strip.show();
+       delay(10);
+     }
    }
    else{
-     strip.setPixelColor(i, strip.Color(0, 255, 0));
-     strip.show();
+     for(int j = 0; j < tab_pix_neon[i]; j++){
+       strip.setPixelColor(j + tab_pix_start[i], strip.Color(0, 255, 0));
+       strip.show();
+     }
    }
  }
 }
