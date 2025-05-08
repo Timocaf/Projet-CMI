@@ -5,7 +5,7 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
- #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
+#include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
 
 // Which pin on the Arduino is connected to the NeoPixels?
@@ -140,31 +140,22 @@ void setup(){
 }
 
 void loop(){
-  //Serial.print("Distance 0° (cm) = ");
   mesure_0 = Capteur_0.getDistance();
-  //Serial.print(mesure_0);
-  //Serial.print("\t Distance 60° (cm) = ");
-  mesure_60 = Capteur_60.getDistance();
-  //Serial.print(mesure_60);
-  //Serial.print("\t Distance 120° (cm) = ");
-  mesure_120 = Capteur_120.getDistance();
-  //Serial.print(mesure_120);
-  //Serial.print("\t Distance 180° (cm) = ");
+  mesure_45 = Capteur_45.getDistance();
+  mesure_90 = Capteur_90.getDistance();
+  mesure_135 = Capteur_135.getDistance();
   mesure_180 = Capteur_180.getDistance();
-  //Serial.print(mesure_180);
-  //Serial.print("\t Distance 240° (cm) = ");
-  mesure_240 = Capteur_240.getDistance();
-  //Serial.print(mesure_240);
-  //Serial.print("\t Distance 300° (cm) = ");
-  mesure_300 = Capteur_300.getDistance();
-  //Serial.print(mesure_300);
+  mesure_225 = Capteur_225.getDistance();
+  mesure_270 = Capteur_270.getDistance();
+  mesure_315 = Capteur_315.getDistance();
   tabMesures [0] = mesure_0;
-  tabMesures [1] = mesure_60;
-  tabMesures [2] = mesure_120;
-  tabMesures [3] = mesure_180;
-  tabMesures [4] = mesure_240;
-  tabMesures [5] = mesure_300;
-  //Serial.print("\t Danger le plus proche = ");
+  tabMesures [1] = mesure_45;
+  tabMesures [2] = mesure_90;
+  tabMesures [3] = mesure_135;
+  tabMesures [4] = mesure_180;
+  tabMesures [5] = mesure_225;
+  tabMesures [6] = mesure_270;
+  tabMesures [7] = mesure_315;
 
   int danger = minVal(tabMesures, nombreCapteurs);
   afficheTableau(tabMesures);
