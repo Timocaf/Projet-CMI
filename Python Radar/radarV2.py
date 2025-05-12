@@ -63,7 +63,7 @@ try:
             tabMesures = line.split(',')
             print(f"Donnée reçue : {line}")
             if len(tabMesures) >= 8:
-                tabMesures = [int(tabMesures[x]) for x in range(-2,6)] # afin d'avoir les mesure dans l'ordre pour un affichage polaire
+                tabMesures = [int(tabMesures[x]) for x in range(2,-6,-1)] # afin d'avoir les mesure dans l'ordre pour un affichage polaire
                 print(tabMesures)
                 update_points(tabMesures)
 
